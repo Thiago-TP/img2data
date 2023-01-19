@@ -5,13 +5,18 @@ from PIL import Image
 
 def img2data(image_file_name):
     image = Image.open(image_file_name)
-    print(image.mode)
     contents = asarray(image)
-    print(contents.shape)
+    if len(contents.shape) != 3:
+        print('Bit intensity not equal to 24, the file could not be converted.')
+        return
+    if contents.shape[2] != 3:
+        print('Bit intensity not equal to 24, the file could not be converted.')
+        return
+
     image_height, image_length, _ = contents.shape
 
     RGBs = [RGB for line in contents for RGB in line] # noqa
-    print(RGBs)
+    # print(RGBs)
 
     path, label = get_path_and_label(image_file_name)
     data_name = label + '.data'
@@ -19,7 +24,7 @@ def img2data(image_file_name):
     with open(path + data_name, 'w') as data_file:
         sys.stdout = data_file
         print(label, end=':\t')
-        print('.word %d, %d\n .byte' % (image_length, image_height))
+        print('.word %d, %d\n.byte' % (image_length, image_height))
 
         column_cont = 0
         for RGB in RGBs:
@@ -34,6 +39,8 @@ def img2data(image_file_name):
             if column_cont == image_length:
                 column_cont = 0
                 print()
+    sys.stdout = sys.__stdout__
+    print("%s %dx%d criado created in '%s'" % (data_name, image_length, image_height, path))
 
 
 def get_path_and_label(image_file_name):
@@ -49,4 +56,4 @@ def get_path_and_label(image_file_name):
 
 
 if __name__ == '__main__':
-    img2data(input())
+    img2data('some image files/tat3.jpg')
