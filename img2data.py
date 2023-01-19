@@ -40,7 +40,7 @@ def img2data(image_file_name):
                 column_cont = 0
                 print()
     sys.stdout = sys.__stdout__
-    print("%s %dx%d criado created in '%s'" % (data_name, image_length, image_height, path))
+    print("%s %dx%d created in '%s'" % (data_name, image_length, image_height, path))
 
 
 def get_path_and_label(image_file_name):
@@ -56,4 +56,4 @@ def get_path_and_label(image_file_name):
 
 
 if __name__ == '__main__':
-    img2data('some image files/tat3.jpg')
+    img2data(input())
