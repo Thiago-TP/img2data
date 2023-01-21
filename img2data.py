@@ -29,12 +29,15 @@ def img2data(image_file_name):
 
         column_cont = 0
         for RGB in RGBs:
-            red_value, green_value, blue_value = RGB[0], RGB[1], RGB[2]
-            color_byte = red_value//32 + ((green_value//32) << 3) + ((blue_value//64) << 6)
+            red_value, green_value, blue_value = RGB
+            color_byte = \
+                (round(7 * red_value / 255) << 0) + \
+                (round(7 * green_value / 255) << 3) + \
+                (round(3 * blue_value / 255) << 6)
             print(color_byte, end='')
 
             num_spaces = 4 - len(str(color_byte))
-            print(num_spaces*' ', end='')
+            print(num_spaces * ' ', end='')
 
             column_cont += 1
             if column_cont == image_length:
