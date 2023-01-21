@@ -6,7 +6,7 @@ from PIL import Image
 def img2data(image_file_name):
     image = Image.open(image_file_name)
     contents = asarray(image)
-    # print(contents.shape)   debug
+
     if len(contents.shape) != 3:
         print('Bit intensity not equal to 24, the file could not be converted.')
         return
@@ -14,10 +14,9 @@ def img2data(image_file_name):
         print('Bit intensity not equal to 24, the file could not be converted.')
         return
 
-    image_height, image_length, _ = contents.shape
+    image_height, image_length, _ = contents.shape  # _ hold the 'type' of the file (RGB) and won't be used
 
     RGBs = [RGB for line in contents for RGB in line] # noqa
-    # print(RGBs)   debug
 
     path, label = get_path_and_label(image_file_name)
     data_name = label + '.data'
@@ -36,13 +35,14 @@ def img2data(image_file_name):
                 (round(3 * blue_value / 255) << 6)
             print(color_byte, end='')
 
-            num_spaces = 4 - len(str(color_byte))
+            num_spaces = 4 - len(str(color_byte))   # variable spacing for better visualization
             print(num_spaces * ' ', end='')
 
             column_cont += 1
             if column_cont == image_length:
                 column_cont = 0
                 print()
+
     sys.stdout = sys.__stdout__     # print back to marking terminal
     print("%s %dx%d created in '%s'" % (data_name, image_length, image_height, path))
 
