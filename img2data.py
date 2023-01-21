@@ -6,6 +6,7 @@ from PIL import Image
 def img2data(image_file_name):
     image = Image.open(image_file_name)
     contents = asarray(image)
+    # print(contents.shape)   debug
     if len(contents.shape) != 3:
         print('Bit intensity not equal to 24, the file could not be converted.')
         return
@@ -16,13 +17,13 @@ def img2data(image_file_name):
     image_height, image_length, _ = contents.shape
 
     RGBs = [RGB for line in contents for RGB in line] # noqa
-    # print(RGBs)
+    # print(RGBs)   debug
 
     path, label = get_path_and_label(image_file_name)
     data_name = label + '.data'
 
     with open(path + data_name, 'w') as data_file:
-        sys.stdout = data_file
+        sys.stdout = data_file  # print will mark the .data file
         print(label, end=':\t')
         print('.word %d, %d\n.byte' % (image_length, image_height))
 
@@ -39,7 +40,7 @@ def img2data(image_file_name):
             if column_cont == image_length:
                 column_cont = 0
                 print()
-    sys.stdout = sys.__stdout__
+    sys.stdout = sys.__stdout__     # print back to marking terminal
     print("%s %dx%d created in '%s'" % (data_name, image_length, image_height, path))
 
 
