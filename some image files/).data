@@ -1,2 +1,2 @@
 ):	.word 16, 16
- .byte
+.byte
